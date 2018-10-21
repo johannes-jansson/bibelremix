@@ -3,3 +3,15 @@ html {
     font-size: 1em;
     line-height: 1.4;
 }
+
+div#content {
+  width: 500px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 3em;
+}
+p {
+  font-size: 1.5em;
+}
