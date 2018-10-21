@@ -30,30 +30,28 @@ const shuffle = (a) => {
 };
 
 const walkChain = (prefix, chain) => {
-  const result = prefix.split(',');
-  console.log(result);
-  let possibilities = chain[prefix];
+  console.log(prefix.join(','));
+  let possibilities = chain[prefix.join(',')];
   console.log(possibilities);
   if (!possibilities || possibilities[0] === undefined) {
-    return result;
+    return prefix;
   }
   possibilities = shuffle(possibilities);
   // console.log(possibilities);
-  result.push(possibilities[0]);
-  console.log(result);
-  const newPrefix = result[1] + ',' + result[2];
+  prefix.push(possibilities[0]);
+  console.log(prefix);
+  const newPrefix = [prefix[1], prefix[2]];
   console.log(newPrefix);
-  return [result[0]].concat(walkChain(newPrefix, chain));
+  return [prefix[0]].concat(walkChain(newPrefix, chain));
 };
 
-console.log(walkChain('the,pobble', testChain));
-console.log(walkChain('and,the', testChain));
-// console.log(walkChain('pobble,who', testChain));
+const generateText = (startPhrase, wordChain) =>
+  walkChain(startPhrase.split(' '), wordChain);
 
-// const generateText = (startPhrase, wordChain) => {
-//   console.log(startPhrase);
-//   console.log(wordChain);
-// };
+// console.log(generateText('the pobble', testChain));
+console.log(generateText('and the', testChain));
+// console.log(generateText('pobble who', testChain));
+
 
 // const processFile = (fname) => {
 //   console.log(fname);
