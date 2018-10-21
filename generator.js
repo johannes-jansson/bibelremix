@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const test = 'And the Golden Grouse And the Pobble who';
+// const test = 'And the Golden Grouse And the Pobble who';
 
 const textToWordChain = (s) => {
   const l = s.toLowerCase().split(' ');
@@ -16,8 +16,8 @@ const textToWordChain = (s) => {
   return map;
 };
 
-const testChain = textToWordChain(test);
-console.log(testChain);
+// const testChain = textToWordChain(test);
+// console.log(testChain);
 
 // const chainToText = (chain) => {
 //   console.log(chain);
@@ -31,42 +31,45 @@ const shuffle = (a) => {
   return a;
 };
 
-const walkChain = (prefix, chain) => {
-  console.log(prefix.join(','));
-  let possibilities = chain[prefix.join(',')];
-  console.log(possibilities);
-  if (!possibilities || possibilities[0] === undefined) {
-    return prefix;
+const verbose = false;
+const walkChain = (result, chain) => {
+  const prefix = result[result.length - 2] + ',' + result[result.length - 1];
+  let possibilities = chain[prefix];
+  if (verbose) console.log(possibilities);
+  if (!possibilities || possibilities[0] === undefined || result.length > 10) {
+    return result;
   }
   possibilities = shuffle(possibilities);
-  // console.log(possibilities);
-  prefix.push(possibilities[0]);
-  console.log(prefix);
-  const newPrefix = [prefix[1], prefix[2]];
-  console.log(newPrefix);
-  return [prefix[0]].concat(walkChain(newPrefix, chain));
+  result.push(possibilities[0]);
+  if (verbose) console.log(result);
+  return walkChain(result, chain);
 };
 
 const generateText = (startPhrase, wordChain) =>
   walkChain(startPhrase.split(' '), wordChain);
 
 // console.log(generateText('the pobble', testChain));
-console.log(generateText('and the', testChain));
+// console.log(generateText('and the', testChain));
 // console.log(generateText('pobble who', testChain));
 
-const files = ['gospel.txt'];
+const processFile = fname =>
+  textToWordChain(fs.readFileSync('resources/' + fname, 'utf8'));
 
-const processFile = (fname) => {
-  fs.readFile('resources/' + fname, 'utf8', (err, data) => {
-    if (!err) {
-      return textToWordChain(data);
-    }
-    return {};
-  });
-};
+// const processFileAsync = (fname) => {
+//   fs.readFile('resources/' + fname, 'utf8', (err, data) => {
+//     if (!err) {
+//       return textToWordChain(data);
+//     }
+//     return {};
+//   });
+// };
 
-let chain = {};
-for (let i = 0; i < files.length; i++) {
-  chain = processFile(files[i]);
-}
-console.log(chain);
+// const files = ['gospel.txt'];
+// let chain = {};
+// for (let i = 0; i < files.length; i++) {
+//   chain = processFile(files[i]);
+// }
+// console.log(chain);
+
+const chain = processFile('gospel.txt');
+console.log(generateText('då sade', chain));
