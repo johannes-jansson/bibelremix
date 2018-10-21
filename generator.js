@@ -1,4 +1,4 @@
-const fs = require('fs');
+// const fs = require('fs');
 
 // Transforms a string into a word chain
 const textToWordChain = (s) => {
@@ -35,8 +35,19 @@ const generateText = (startPhrase, wordChain) =>
   walkChain(startPhrase.split(' '), wordChain);
 
 // Creates wordChain from filename
-const processFile = fname =>
-  textToWordChain(fs.readFileSync('resources/' + fname, 'utf8'));
+// const processFile = fname =>
+//   textToWordChain(fs.readFileSync('resources/' + fname, 'utf8'));
 
-const chain = processFile('gospel.txt');
-console.log(generateText('Så älskade', chain).join(' '));
+// const chain = processFile('gospel.txt');
+// console.log(generateText('Så älskade', chain).join(' '));
+
+// eslint-disable-next-line no-undef
+const chain = textToWordChain(text);
+
+document.addEventListener('click', function (event) {
+  if (!event.target.matches('#generate-button')) return;
+  event.preventDefault();
+  const userPrefix = document.getElementById('input-prefix').value;
+  const verse = generateText(userPrefix, chain).join(' ');
+  document.getElementById('textplace').innerHTML = '<p>' + verse + '</p>';
+});
