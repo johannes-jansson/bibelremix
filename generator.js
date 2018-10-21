@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const test = 'And the Golden Grouse And the Pobble who';
 
 const textToWordChain = (s) => {
@@ -52,7 +54,19 @@ const generateText = (startPhrase, wordChain) =>
 console.log(generateText('and the', testChain));
 // console.log(generateText('pobble who', testChain));
 
+const files = ['gospel.txt'];
 
-// const processFile = (fname) => {
-//   console.log(fname);
-// };
+const processFile = (fname) => {
+  fs.readFile('resources/' + fname, 'utf8', (err, data) => {
+    if (!err) {
+      return textToWordChain(data);
+    }
+    return {};
+  });
+};
+
+let chain = {};
+for (let i = 0; i < files.length; i++) {
+  chain = processFile(files[i]);
+}
+console.log(chain);
