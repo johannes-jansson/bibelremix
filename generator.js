@@ -22,7 +22,7 @@ const walkChain = (result, chain) => {
   if (
     !possibilities
     || possibilities[0] === undefined
-    || result.length > 100
+    || result.length > 30
   ) {
     return result;
   }
@@ -32,14 +32,14 @@ const walkChain = (result, chain) => {
 
 // Wrapper for walkChain
 const generateText = (startPhrase, wordChain) =>
-  walkChain(startPhrase.split(' '), wordChain);
+  walkChain(startPhrase.split(' '), wordChain).join(' ').replace(/[.!:][^.!:]*?$/g, '') + '.';
 
 // Creates wordChain from filename
 // const processFile = fname =>
 //   textToWordChain(fs.readFileSync('resources/' + fname, 'utf8'));
 
 // const chain = processFile('gospel.txt');
-// console.log(generateText('Så älskade', chain).join(' '));
+// console.log(generateText('Så älskade', chain));
 
 // eslint-disable-next-line no-undef
 const chain = textToWordChain(text);
@@ -48,6 +48,6 @@ document.addEventListener('click', function (event) {
   if (!event.target.matches('#generate-button')) return;
   event.preventDefault();
   const userPrefix = document.getElementById('input-prefix').value;
-  const verse = generateText(userPrefix, chain).join(' ');
+  const verse = generateText(userPrefix, chain);
   document.getElementById('textplace').innerHTML = '<p>' + verse + '</p>';
 });
